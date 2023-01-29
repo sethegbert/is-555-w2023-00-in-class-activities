@@ -72,18 +72,47 @@ drinks <- tribble(
 
 # Let's make it more tidy. pivot_longer
 
+drinks %>% 
+  pivot_longer(
+    cols = soda:sparkling_water, # same as doing cols = c(soda, tea, sparkling_water)
+    names_to = 'drink_type',
+    values_to = 'liters_per_capita',
+  )
+
+
 
 # New data:
 gap <- read_csv('https://www.dropbox.com/s/dv1a1ldkuyoftn2/gap_smaller.csv?dl=1')
 
 # Start with just country, year, lifeExp, pivot wider
 
+gap %>% 
+  select(country, year, lifeExp) %>% 
+  pivot_wider(
+    names_from = year,
+    values_from = lifeExp
+  )
+
 
 # Now let's go the other way: pivot all three measures longer
+
+gap %>% 
+  pivot_longer(
+    cols = lifeExp:gdpPercap,
+    names_to = 'measure',
+    values_to = 'value'
+  )
+
 
 
 # Pivot all three measures wider. Gets messy, but 
 # sometimes data comes to you in this format
+
+gap %>% 
+  pivot_wider(
+    names_from = year,
+    values_from = c(lifeExp,pop,gdpPercap)
+  )
 
 
 
@@ -93,7 +122,13 @@ bnames <- read_csv('https://www.dropbox.com/s/6bck5fy4aag76kw/baby_names.csv?dl=
 bob <- read_csv('https://www.dropbox.com/s/mozqpceit51hia7/bob_ross.csv?dl=1')
 
 # see if you can pivot the religious income data into a tidier format
-ri
+ri %>% 
+  pivot_longer(
+    cols = `<$10k`:`Don't know/refused`,
+    names_to = 'income',
+    values_to = 'household_count'
+  ) %>% 
+  filter(income == '>150k')
 
 # see if you can widen the baby names into a format with one row per name (and sex)
 bnames
