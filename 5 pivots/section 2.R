@@ -171,7 +171,7 @@ bnames <- read_csv('https://www.dropbox.com/s/6bck5fy4aag76kw/baby_names.csv?dl=
 bob <- read_csv('https://www.dropbox.com/s/mozqpceit51hia7/bob_ross.csv?dl=1')
 
 # see if you can pivot the religious income data into a tidier format
-<<<<<<< HEAD
+
 ri %>% 
   pivot_longer(
     cols = `<$10k`:`Don't know/refused`,
@@ -179,7 +179,7 @@ ri %>%
     values_to = 'household_count'
   ) %>% 
   filter(income == '>150k')
-=======
+
 # show only the top income BRACKET for each religion
 ri %>% 
   pivot_longer(
@@ -191,11 +191,30 @@ ri %>%
 
 
 
-
->>>>>>> dff929c5c0ef755508f25dafb86b9109a24670dc
-
 # see if you can widen the baby names into a format with one row per name (and sex)
 bnames
 
 # make the bob ross data tidier
-bob
+bob %>% 
+  pivot_longer(
+    cols = -c(episode, season, episode_num, title),
+    names_to = 'feature', 
+    values_to = 'is_present'
+  ) %>% 
+  filter(str_detect(feature, 'frame') & is_present == 1) %>% 
+  distinct(episode)
+
+
+# has a frame but not a bridge
+
+bob %>%  select(contains('bridge'))
+
+bob %>% 
+  pivot_longer(
+    cols = -c(episode, season, episode_num, title),
+    names_to = 'feature', 
+    values_to = 'is_present'
+  ) %>% 
+  filter((str_detect(feature, 'frame') & is_present == 1) | (feature == 'bridge' & is_present == 0)) %>% 
+  distinct(episode, .keep_all = T)
+
