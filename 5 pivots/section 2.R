@@ -186,8 +186,7 @@ ri %>%
     cols = !religion,
     names_to = 'income_bracket',
     values_to = 'household_count'
-  ) %>% 
-  filter(income_bracket == '>150k')
+  )
 
 
 
